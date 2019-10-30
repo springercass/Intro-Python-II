@@ -34,24 +34,72 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-#
-# Main
-#
-
 # Make a new player object that is currently in the 'outside' room.
+
 player_name = input("Hello, what is your name?")
 new_player = Player(player_name, room['outside'])
-# Write a loop that:
-#
-# * Prints the current room name
-print(
-    f"Hello {new_player.name}, your current location is {new_player.current_room.name}.")
-# * Prints the current description (the textwrap module might be useful here).
-print(f"{new_player.current_room.description}.")
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
 
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+# Write a loop that:
+# * Prints the current room name
+while True:
+    print(
+        f"{new_player.name}, your current location is {new_player.current_room.name}.")
+
+    # * Prints the current description (the textwrap module might be useful here).
+    print(f"{new_player.current_room.description}.")
+    print("---")
+    print("North: n, East: e, South: s, West: w, Quit: q")
+
+    # * Waits for user input and decides what to do.
+    direction = input("Which direction would you like to go?")
+    answer = direction.lower()
+    print("---")
+    if len(answer) == 1:
+        if direction not in ["n", "e", "s", "w", "q"]:
+            print("Please enter a valid direction.")
+            continue
+
+        if direction == "q":
+            print("End game.")
+            break
+
+        current_room = new_player.current_room
+
+        if direction == "n":
+            if current_room.n_to is None:
+                print("You can't go that way.")
+                continue
+
+            else:
+                new_player.current_room = current_room.n_to
+
+        elif direction == "e":
+            if current_room.e_to is None:
+                print("You can't go that way.")
+                continue
+
+            else:
+                new_player.current_room = current_room.e_to
+
+        elif direction == "s":
+            if current_room.s_to is None:
+                print("You can't go that way.")
+                continue
+
+            else:
+                new_player.current_room = current_room.s_to
+
+        elif direction == "w":
+            if current_room.w_to is None:
+                print("You can't go that way.")
+                continue
+
+            else:
+                new_player.current_room = current_room.w_to
+
+    else:
+        print("Please enter a valid direction.")
+
+    # If the user enters a cardinal direction, attempt to move to the room there.
+    # Print an error message if the movement isn't allowed.
+    # If the user enters "q", quit the game.
